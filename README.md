@@ -17,11 +17,10 @@ Run the following commands in order:
 # ABOUT THE CODE
 
 I followed a standard HTTP API/REST Model-Controller-Service architecture.
-Model -> As the only data access layer
-Service -> Containing bussiness logic (interacts with models and perform non basic crud operations and validations)
-Controller -> interaction between client and service(bussiness) layer.
-
-For best selling products I opted for using aggregation pipelines as a non-blocking alternative to standard sync array operations.
+* Model -> As the only data access layer
+* Service -> Containing bussiness logic (interacts with models and perform non basic crud operations and validations)
+* Controller -> interaction between client and service(bussiness) layer.
+* For best selling products I opted for using aggregation pipelines as a non-blocking alternative to standard sync array operations.
 
 
 # API
