@@ -98,7 +98,6 @@ export default class ProductService {
         } catch(err) {
             throw err;
         }
-;
     }
 
 }
