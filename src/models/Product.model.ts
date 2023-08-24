@@ -1,12 +1,12 @@
-import { MongoClient, WithId, FindCursor, Collection, UpdateResult, DeleteResult } from "mongodb";
+import { MongoClient, Db, FindCursor, Collection, UpdateResult, DeleteResult } from "mongodb";
 import { IOperationResult, IProduct } from "../interfaces/Product.interfaces";
 
 
 export default class ProductModel {
 
-    private dbClient;
-    private db;
-    private products;
+    private dbClient: MongoClient;
+    private db: Db;
+    private products: Collection;
 
     constructor(dbClient: MongoClient) {
         this.dbClient = dbClient;
