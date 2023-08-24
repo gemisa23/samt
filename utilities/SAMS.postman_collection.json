@@ -1,0 +1,171 @@
+{
+	"info": {
+		"_postman_id": "e73e731f-68c1-4066-81b8-fba27345a5cb",
+		"name": "SAMS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17204472",
+		"_collection_link": "https://addalitica.postman.co/workspace/SAM-SISTEMAS~3f11394b-eba8-4bc3-a189-e7437b3abe47/collection/17204472-e73e731f-68c1-4066-81b8-fba27345a5cb?action=share&source=collection_link&creator=17204472"
+	},
+	"item": [
+		{
+			"name": "Crear nuevo producto [OK]",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"code_1\",\r\n    \"name\": \"ProductoEjemplo\",\r\n    \"sellValue\": 45.99\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3080/products",
+					"host": [
+						"localhost"
+					],
+					"port": "3080",
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Actualizar producto",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:500/products",
+					"host": [
+						"localhost"
+					],
+					"port": "500",
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eliminar producto",
+			"request": {
+				"method": "DELETE",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar producto por nombre [OK]",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:500/products?name=Producto-1",
+					"host": [
+						"localhost"
+					],
+					"port": "500",
+					"path": [
+						"products"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Producto-1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar producto por ID [OK]",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:500/products?id=Producto-1",
+					"host": [
+						"localhost"
+					],
+					"port": "500",
+					"path": [
+						"products"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "Producto-1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Productos ordenados DESC",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:500/products/sorted",
+					"host": [
+						"localhost"
+					],
+					"port": "500",
+					"path": [
+						"products",
+						"sorted"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mejor vendido ($)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3080/products/best_selling/by_value",
+					"host": [
+						"localhost"
+					],
+					"port": "3080",
+					"path": [
+						"products",
+						"best_selling",
+						"by_value"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mejor vendido (unidades)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:500/products/best_selling/by_units",
+					"host": [
+						"localhost"
+					],
+					"port": "500",
+					"path": [
+						"products",
+						"best_selling",
+						"by_units"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
