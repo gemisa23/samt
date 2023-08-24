@@ -18,8 +18,7 @@ export default class ProductModel {
     async registerNewProduct(product: IProduct): Promise<IOperationResult> {
         // - PENDING: Verify if ID is already taken.
         try {
-            const collection = this.db.collection('Products');
-            const result = await collection.insertOne(product);
+            const result = await this.products.insertOne(product);
             return <IOperationResult>{
                 success: true,
                 details: result
@@ -31,9 +30,8 @@ export default class ProductModel {
 
 
     async updateProduct(product: IProduct): Promise<IOperationResult> {
-        const productsCollection: Collection<IProduct> = this.db.collection('Products');
         try {
-            const updateResult: UpdateResult = await productsCollection.updateOne({ id: product.id }, { $set: product });
+            const updateResult: UpdateResult = await this.products.updateOne({ id: product.id }, { $set: product });
             console.log('Update Result:', updateResult);
             return <IOperationResult>{
                 success: true,
@@ -45,10 +43,8 @@ export default class ProductModel {
     }
 
     async deleteProduct(productId: string): Promise<IOperationResult> {
-        const productsCollection: Collection<IProduct> = this.db.collection('Products');
-    
         try {
-            const deleteResult: DeleteResult = await productsCollection.deleteOne({ id: productId });
+            const deleteResult: DeleteResult = await this.products.deleteOne({ id: productId });
             if (deleteResult.deletedCount === 1) {
                 console.log('Product deleted successfully.');
                 return {
