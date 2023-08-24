@@ -1,6 +1,10 @@
 import { IOperationResult } from "../interfaces/Product.interfaces";
 
-
+/**
+ * Validates the data received for registering a product.
+ * @param product 
+ * @returns IOperationResult
+ */
 export const validateRegistrarionProductFields = (product: any): IOperationResult => {
 
     if (!Number(product.sellValue)) {
@@ -32,7 +36,11 @@ export const validateRegistrarionProductFields = (product: any): IOperationResul
 }
 
 
-
+/**
+ * Validates the fields received for updating a product.
+ * @param fields Any object to be validated.
+ * @returns IOperationResult
+ */
 export const validateUpdateFields = (fields: object): IOperationResult => {
 
     const receivedKeys: string[] = Reflect.ownKeys(fields) as string[];

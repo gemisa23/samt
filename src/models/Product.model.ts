@@ -16,66 +16,49 @@ export default class ProductModel {
 
 
     async registerNewProduct(product: IProduct): Promise<IOperationResult> {
-        // - PENDING: Verify if ID is already taken.
-        try {
-            const result = await this.products.insertOne(product);
-            return <IOperationResult>{
-                success: true,
-                details: result
-            }
-        } catch(error) {
-            throw error;
+        const result = await this.products.insertOne(product);
+        return <IOperationResult>{
+            success: true,
+            details: result
         }
     }
 
 
     async updateProduct(product: IProduct): Promise<IOperationResult> {
-        try {
-            const updateResult: UpdateResult = await this.products.updateOne({ id: product.id }, { $set: product });
-            console.log('Update Result:', updateResult);
-            return <IOperationResult>{
-                success: true,
-                details: 'Product updated.'
-            };
-        } catch (error) {
-            throw error;
-        }
+        const updateResult: UpdateResult = await this.products.updateOne({ id: product.id }, { $set: product });
+        console.log('Update Result:', updateResult);
+        return <IOperationResult>{
+            success: true,
+            details: 'Product updated.'
+        };
     }
 
     async deleteProduct(productId: string): Promise<IOperationResult> {
-        try {
-            const deleteResult: DeleteResult = await this.products.deleteOne({ id: productId });
-            if (deleteResult.deletedCount === 1) {
-                console.log('Product deleted successfully.');
-                return {
-                    success: true,
-                    details: 'Product deleted successfully.'
-                };
-            } else {
-                console.log('Product not found.');
-                return {
-                    success: false,
-                    details: 'Product not found.'
-                };
-            }
-        } catch (error) {
-            throw error;
+        const deleteResult: DeleteResult = await this.products.deleteOne({ id: productId });
+        if (deleteResult.deletedCount === 1) {
+            console.log('Product deleted successfully.');
+            return {
+                success: true,
+                details: 'Product deleted successfully.'
+            };
+        } else {
+            console.log('Product not found.');
+            return {
+                success: false,
+                details: 'Product not found.'
+            };
         }
     }
 
 
     async findOne(query: object): Promise<IProduct | null> {
-        try {
-            const searchResult  = await this.products.findOne(query);
-            if (searchResult !== null) {
-                /* Agregar { _id: false } */
-                const { _id, ...productData } = searchResult;
-                return <IProduct>productData;
-            }
-            return null;
-        } catch(error) {
-            throw error;
+        const searchResult  = await this.products.findOne(query);
+        if (searchResult !== null) {
+            /* Agregar { _id: false } */
+            const { _id, ...productData } = searchResult;
+            return <IProduct>productData;
         }
+        return null;
     }
 
     /* Devuelve un cursor */

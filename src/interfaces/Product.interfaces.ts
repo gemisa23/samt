@@ -16,3 +16,7 @@ export interface IProductRegisteringData {
     name: string | null,
     sellValue: number | null
 }
+export interface IListingOptions {
+    order: string,
+    field: string
+}

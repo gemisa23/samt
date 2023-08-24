@@ -1,18 +1,9 @@
 import { FindCursor, MongoClient } from "mongodb";
-import { IProduct } from "../interfaces/Product.interfaces";
+import { IListingOptions, IOperationResult, IProduct } from "../interfaces/Product.interfaces";
 import ProductModel from "../models/Product.model";
 import { validateRegistrarionProductFields, validateUpdateFields } from "../validators/Product.validator";
 
 
-interface IOperationResult {
-    success: boolean,
-    details: string | null
-}
-
-interface IListingOptions {
-    order: string,
-    field: string
-}
 
 const SORTINGS = Object.freeze({
     desc : -1,
@@ -26,6 +17,10 @@ export default class ProductService {
     constructor(dbClient: MongoClient) {
         this.productModel = new ProductModel(dbClient);
     }
+
+    /**
+     * Los errores 
+     */
 
     async registerNewProduct(product: IProduct): Promise<IOperationResult> {
         try {
