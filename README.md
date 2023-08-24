@@ -14,6 +14,9 @@ Run the following commands in order:
     * Can be changed by modifying `/src/config/app.ts` -> `APP_PORT` and `APP_ADDR`.
     * Same goes for the MongoURL.
 
+* **Postman collection:**
+    * A postman collection can be found on `/utilities`.
+
 # ABOUT THE CODE
 
 I followed a standard HTTP API/REST Model-Controller-Service architecture.
