@@ -22,10 +22,10 @@ export default class ProductModel {
             const result = await collection.insertOne(product);
             return <IOperationResult>{
                 success: true,
-                details: 'asd'
+                details: result
             }
-        } catch(err) {
-            throw new Error();
+        } catch(error) {
+            throw error;
         }
     }
 
@@ -40,10 +40,7 @@ export default class ProductModel {
                 details: 'Product updated.'
             };
         } catch (error) {
-            return <IOperationResult>{
-                success: false,
-                details: 'Product update failed.'
-            };
+            throw error;
         }
     }
 
@@ -52,7 +49,6 @@ export default class ProductModel {
     
         try {
             const deleteResult: DeleteResult = await productsCollection.deleteOne({ id: productId });
-    
             if (deleteResult.deletedCount === 1) {
                 console.log('Product deleted successfully.');
                 return {
@@ -66,13 +62,8 @@ export default class ProductModel {
                     details: 'Product not found.'
                 };
             }
-        } catch (error: any) {
-            console.error('Error deleting product:', error);
-    
-            return {
-                success: false,
-                details: error.message
-            };
+        } catch (error) {
+            throw error;
         }
     }
 
@@ -86,8 +77,8 @@ export default class ProductModel {
                 return <IProduct>productData;
             }
             return null;
-        } catch(err) {
-            throw err;
+        } catch(error) {
+            throw error;
         }
     }
 

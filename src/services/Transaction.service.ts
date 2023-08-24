@@ -18,11 +18,20 @@ export default class TransactionService {
 
 
     async bestSellingProductsByValue(daysAgo: number = 30): Promise<IBestSellingProductByValue[]> {
-        return await this.transactionModel.bestSellingProductsByValue(daysAgo);
+        try {
+            return await this.transactionModel.bestSellingProductsByValue(daysAgo);
+        } catch(err) {
+            throw err;
+        }
+        
     }
 
     async bestSellingProductsByUnits(daysAgo: number = 30): Promise<IBestSellingProductByUnits[]> {
-        return await this.transactionModel.bestSellingProductsByUnits(daysAgo);
+        try {
+            return await this.transactionModel.bestSellingProductsByUnits(daysAgo);
+        } catch(err) {
+            throw err;
+        }
     }
 
 }

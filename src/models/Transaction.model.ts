@@ -16,51 +16,60 @@ export default class TransactionModel {
 
 
     async bestSellingProductsByValue(daysAgo: number = 30): Promise<IBestSellingProductByValue[]> {
-        const startDate = new Date();
-        startDate.setDate(startDate.getDate() - daysAgo);
-
-        const pipeline = [
-            { $match: { date: { $gte: startDate } } },
-            { $unwind: '$products' },
-            {
-                $group: {
-                    _id: '$products.productId',
-                    productId: { $first: '$products.productId' },
-                    productName: { $first: '$products.productName' },
-                    totalValueSold: {
-                        $sum: { $multiply: ['$products.unitsSold', '$products.sellValue'] }
+        try {
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - daysAgo);
+    
+            const pipeline = [
+                { $match: { date: { $gte: startDate } } },
+                { $unwind: '$products' },
+                {
+                    $group: {
+                        _id: '$products.productId',
+                        productId: { $first: '$products.productId' },
+                        productName: { $first: '$products.productName' },
+                        totalValueSold: {
+                            $sum: { $multiply: ['$products.unitsSold', '$products.sellValue'] }
+                        }
                     }
-                }
-            },
-            { $sort: { totalValueSold: -1 } },
-            { $limit: 1 }
-        ];
+                },
+                { $sort: { totalValueSold: -1 } },
+                { $limit: 1 }
+            ];
+    
+            const bestSelling = await this.transactions.aggregate<IBestSellingProductByValue>(pipeline).toArray();
+            return bestSelling;
+        } catch(err) {
+            throw err;
+        }
 
-        const bestSelling = await this.transactions.aggregate<IBestSellingProductByValue>(pipeline).toArray();
-        return bestSelling;
     }
 
 
     async bestSellingProductsByUnits(daysAgo: number = 30): Promise<IBestSellingProductByUnits[]> {
-        const startDate = new Date();
-        startDate.setDate(startDate.getDate() - daysAgo);
-        const pipeline = [
-            { $match: { date: { $gte: startDate } } },
-            { $unwind: '$products'},
-            {
-                $group: {
-                    _id: '$products.productId',
-                    productId: { $first: '$products.productId' },
-                    productName: { $first: '$products.productName' },
-                    totalUnitsSold: { $sum: '$products.unitsSold' }
-                }
-            },
-            { $sort: { totalUnitsSold: -1 } },
-            { $limit: 1 }
-        ];
-
-        const bestSelling = await this.transactions.aggregate<IBestSellingProductByUnits>(pipeline).toArray();
-        return bestSelling;
+        try {
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - daysAgo);
+            const pipeline = [
+                { $match: { date: { $gte: startDate } } },
+                { $unwind: '$products'},
+                {
+                    $group: {
+                        _id: '$products.productId',
+                        productId: { $first: '$products.productId' },
+                        productName: { $first: '$products.productName' },
+                        totalUnitsSold: { $sum: '$products.unitsSold' }
+                    }
+                },
+                { $sort: { totalUnitsSold: -1 } },
+                { $limit: 1 }
+            ];
+    
+            const bestSelling = await this.transactions.aggregate<IBestSellingProductByUnits>(pipeline).toArray();
+            return bestSelling;
+        } catch(err) {
+            throw err;
+        }
     }
 
 }

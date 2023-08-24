@@ -1,8 +1,7 @@
 import { FindCursor, MongoClient } from "mongodb";
-
 import { IProduct } from "../interfaces/Product.interfaces";
 import ProductModel from "../models/Product.model";
-
+import { validateRegistrarionProductFields, validateUpdateFields } from "../validators/Product.validator";
 
 
 interface IOperationResult {
@@ -30,18 +29,22 @@ export default class ProductService {
 
     async registerNewProduct(product: IProduct): Promise<IOperationResult> {
         try {
-            /* PENDING: Validate the product does not exist already. */
+            /* Validate product fields */
+            const validationResult = validateRegistrarionProductFields(product);
+            if (!validationResult.success) {
+                return <IOperationResult>validationResult;
+            }
+            /*  Check product existence */
             if (await this.productModel.findOne({ id: product.id }) !== null) {
                 return {
                     success: false,
                     details: `The id ${product.id} is already taken.`
                 };
             }
-            await this.productModel.registerNewProduct(product);
-            return {
-                success: true,
-                details: 'Product registered correctly.'
-            };
+
+            const registrationResult = await this.productModel.registerNewProduct(product);
+            return <IOperationResult>registrationResult;
+
         } catch(err) {
             throw err;
         }
@@ -49,30 +52,53 @@ export default class ProductService {
 
 
     async findProductByName(name: string): Promise<IProduct | null> {
-        return await this.productModel.findOne({ name });
+        try {
+            return await this.productModel.findOne({ name }); 
+        } catch(err) {
+            throw err;
+        }
     }
 
     async findProductById(id: string): Promise<IProduct | null> {
-        return await this.productModel.findOne({ id });
+        try {
+            return await this.productModel.findOne({ id });
+        } catch(err) {
+            throw err;
+        }
     }
 
-
     async listAllProducts(listingOptions: IListingOptions): Promise<Array<IProduct>> {
-        const productsCursor: FindCursor = await this.productModel.allProducts();
-        const sortOptions = { [ listingOptions.field] : listingOptions.order as keyof typeof SORTINGS };
-        const sortedProducts: Array<IProduct> = await productsCursor.sort(sortOptions).toArray();
-        return sortedProducts;
+        try {
+            const productsCursor: FindCursor = await this.productModel.allProducts();
+            const sortOptions = { [ listingOptions.field] : listingOptions.order as keyof typeof SORTINGS };
+            const sortedProducts: Array<IProduct> = await productsCursor.sort(sortOptions).toArray();
+            return sortedProducts;
+        } catch(err) {
+            throw err;
+        }
     }
 
     async updateProduct(product: IProduct | void): Promise<IOperationResult> {
-        /* PENDING: Validate product */
-        const updateResult = await this.productModel.updateProduct(product as IProduct);
-        return <IOperationResult>updateResult;
+        try {
+            const updateValidation = validateUpdateFields(product as object);
+            if (!updateValidation.success) {
+                return <IOperationResult>updateValidation;
+            }
+            const updateResult = await this.productModel.updateProduct(product as IProduct);
+            return <IOperationResult>updateResult;
+        } catch(err) {
+            throw err;
+        }
     }
 
     async deleteProduct(productID: string) {
-        const deleteResult = await this.productModel.deleteProduct(productID);
-        return <IOperationResult>deleteResult;
+        try {
+            const deleteResult = await this.productModel.deleteProduct(productID);
+            return <IOperationResult>deleteResult;
+        } catch(err) {
+            throw err;
+        }
+;
     }
 
 }
