@@ -10,9 +10,7 @@ import loadTransactionController from "./controllers/Transaction.controller";
 
 import { APP_ADDR, APP_PORT, DEFAULT_MONGO_URL } from "./config/app";
 
-
-
-const build = async () => {
+const build = async (): Promise<void> => {
     try {
         /* Setup DB */
         const app: Express = express();

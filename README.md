@@ -1,12 +1,32 @@
 
+# SETUP
+
+Run the following commands in order:
+
+* **Setup:**
+    * `npm i`
+    * `npm run build` to build the project.
+    * `npm run setup_db` to setup the database with mock data
+    * `npm run start` to start the server
+
+* **Server configuration:**
+    * Server will run on port 127.0.0.1:500 by default.
+    * Can be changed by modifying `/src/config/app.ts` -> `APP_PORT` and `APP_ADDR`.
+    * Same goes for the MongoURL.
+
+# ABOUT THE CODE
+
+I followed a standard HTTP API/REST Model-Controller-Service architecture.
+Model -> As the only data access layer
+Service -> Containing bussiness logic (interacts with models and perform non basic crud operations and validations)
+Controller -> interaction between client and service(bussiness) layer.
+
+For best selling products I opted for using aggregation pipelines as a non-blocking alternative to standard sync array operations.
+
+
 # API
 
 The following API endpoints are available for managing products:
-
-* **Setup:**
-    * Run `npm i`
-    * Setup db `npm run setup_db`
-    * Run server + nodemon `npm run dev`
 
 * **Create product:** `POST /products`
     * Request body:
