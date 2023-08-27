@@ -46,7 +46,7 @@ The following API endpoints are available for managing products:
 * **Find specific product:**
     * `GET /products?name=ProductName`
     * `GET /products?id=ProductId`
-    * Returns an array of products that match the specified criteria.
+    * Returns the product or `null`.
 * **Sorted list products:**
     * `GET /products/sorted?order=desc&field=name`
     * `GET /products/sorted?order=asc&field=name`
