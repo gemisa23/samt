@@ -6,7 +6,7 @@ Run the following commands in order:
 * **Setup:**
     * `npm i`
     * `npm run build` to build the project.
-    * `npm run setup_db` to setup the database with mock data
+    * [IMPORTANT] `npm run setup_db` to setup the database with mock data. It generates the required mock transactions documents (used to calculate best selling products)
     * `npm run start` to start the server
 
 * **Server configuration:**
