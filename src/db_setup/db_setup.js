@@ -1,5 +1,5 @@
 const { MongoClient } = require('mongodb');
-const client   = new MongoClient("mongodb://localhost:27017/SAM");
+const client   = new MongoClient("mongodb://localhost:27017/SAM", { useUnifiedTopology: true}, { useNewUrlParser: true }, { connectTimeoutMS: 30000 }, { keepAlive: 1} );
 
 const randFloat = (min, max) => Math.random() * (max - min) + min
 const randInt   = (min, max) => Math.floor(randFloat(min, max));

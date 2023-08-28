@@ -32,13 +32,13 @@ The following API endpoints are available for managing products:
 
 * **Create product:** `POST /products`
     * Request body:
-        * `productId`: The product ID (string)
-        * `productName`: The product name (string)
+        * `id`: The product ID (string)
+        * `name`: The product name (string)
         * `sellValue`: The product sell value (number)
 * **Update product:** `PUT /products`
     * Request body:
-        * `productId`: The product ID (string) (optional)
-        * `productName`: The product name (string) (optional)
+        * `id`: The product ID (string) (optional)
+        * `name`: The product name (string) (optional)
         * `sellValue`: The product sell value (number) (optional)
 * **Delete a product:** `DELETE /products/:product_id`
     * Path parameter:

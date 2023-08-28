@@ -17,7 +17,7 @@ export default class ProductModel {
 
     async registerNewProduct(product: IProduct): Promise<IOperationResult> {
         const result = await this.products.insertOne(product);
-        return <IOperationResult>{
+        return {
             success: true,
             details: result
         }
@@ -27,7 +27,7 @@ export default class ProductModel {
     async updateProduct(product: IProduct): Promise<IOperationResult> {
         const updateResult: UpdateResult = await this.products.updateOne({ id: product.id }, { $set: product });
         console.log('Update Result:', updateResult);
-        return <IOperationResult>{
+        return {
             success: true,
             details: 'Product updated.'
         };
@@ -36,13 +36,11 @@ export default class ProductModel {
     async deleteProduct(productId: string): Promise<IOperationResult> {
         const deleteResult: DeleteResult = await this.products.deleteOne({ id: productId });
         if (deleteResult.deletedCount === 1) {
-            console.log('Product deleted successfully.');
             return {
                 success: true,
                 details: 'Product deleted successfully.'
             };
         } else {
-            console.log('Product not found.');
             return {
                 success: false,
                 details: 'Product not found.'

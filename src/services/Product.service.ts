@@ -3,8 +3,6 @@ import { IListingOptions, IOperationResult, IProduct } from "../interfaces/Produ
 import ProductModel from "../models/Product.model";
 import { validateRegistrarionProductFields, validateUpdateFields } from "../validators/Product.validator";
 
-
-
 const SORTINGS = Object.freeze({
     desc : -1,
     asc  : 1
@@ -27,7 +25,7 @@ export default class ProductService {
             /* Validate product fields */
             const validationResult = validateRegistrarionProductFields(product);
             if (!validationResult.success) {
-                return <IOperationResult>validationResult;
+                return validationResult;
             }
             /*  Check product existence */
             if (await this.productModel.findOne({ id: product.id }) !== null) {
@@ -38,7 +36,7 @@ export default class ProductService {
             }
 
             const registrationResult = await this.productModel.registerNewProduct(product);
-            return <IOperationResult>registrationResult;
+            return registrationResult;
 
         } catch(err) {
             throw err;
@@ -73,23 +71,35 @@ export default class ProductService {
         }
     }
 
-    async updateProduct(product: IProduct | void): Promise<IOperationResult> {
+    async updateProduct(product: IProduct): Promise<IOperationResult> {
         try {
+            if (!await this.productModel.findOne({ id: product.id })) {
+                return {
+                    success: false,
+                    details: 'An id is required for updating a product, and it should match an existing product id.'
+                };
+            };
             const updateValidation = validateUpdateFields(product as object);
             if (!updateValidation.success) {
-                return <IOperationResult>updateValidation;
+                return updateValidation;
             }
             const updateResult = await this.productModel.updateProduct(product as IProduct);
-            return <IOperationResult>updateResult;
+            return updateResult;
         } catch(err) {
             throw err;
         }
     }
 
-    async deleteProduct(productID: string) {
+    async deleteProduct(productID: string): Promise<IOperationResult>  {
         try {
+            if (!await this.productModel.findOne({ id: productID })) {
+                return {
+                    success: false,
+                    details: 'A valid id is required for updating a product, and it should match an existing product id.'
+                };
+            };
             const deleteResult = await this.productModel.deleteProduct(productID);
-            return <IOperationResult>deleteResult;
+            return deleteResult;
         } catch(err) {
             throw err;
         }

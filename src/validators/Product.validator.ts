@@ -7,10 +7,13 @@ import { IOperationResult } from "../interfaces/Product.interfaces";
  */
 export const validateRegistrarionProductFields = (product: any): IOperationResult => {
 
-    if (!Number(product.sellValue)) {
+    console.log(product);
+    console.log('asdadasd');
+
+    if (typeof product.sellValue != 'number' || product.sellValue !== product.sellValue || product.sellValue < 0) {
         return {
             success: false,
-            details: `The provided sell value <${product.sellValue}> is invalid. Expected a number`
+            details: `The provided sell value <${product.sellValue}> is invalid. Expected a valid positive number`
         };
     }
 
@@ -41,8 +44,9 @@ export const validateRegistrarionProductFields = (product: any): IOperationResul
  * @param fields Any object to be validated.
  * @returns IOperationResult
  */
-export const validateUpdateFields = (fields: object): IOperationResult => {
+export const validateUpdateFields = (fields: any): IOperationResult => {
 
+    /* Validate all the keys are valid*/
     const receivedKeys: string[] = Reflect.ownKeys(fields) as string[];
 
     for (let i = 0; i < receivedKeys.length; i++) {
@@ -55,25 +59,31 @@ export const validateUpdateFields = (fields: object): IOperationResult => {
                 details: `Invalid field ${key}`
             };
         }
-        const v: string | number | unknown = fields[key as string as keyof typeof fields]
-        switch(key) {
-            case 'sellValue': 
-                if (isNaN(Number(v))) {
-                    return {
-                        success: false,
-                        details: `Invalid field value <${v}> for field <sellValue>`
-                    };
-                }
-            case 'id':
-            case 'name':
-                if ((v as string).length < 1 || typeof v != 'string') {
-                    return {
-                        success: false,
-                        details: `Invalid field value <${v}> for field <${key}>`
-                    };
-                }
-        }
+  
+    }
 
+    /* ID is required*/
+    if (!fields.id) {
+        return {
+            success: false,
+            details: 'Missing or invalid id.'
+        };
+    }
+
+    if (Reflect.has(fields, 'name') && (typeof fields.name != 'string' || fields.name.length < 1)) {
+        return {
+            success: false,
+            details: `Field <name> should be a string.`
+        }
+    }
+
+    if (Reflect.has(fields, 'sellValue')) {
+        if (typeof fields.sellValue != 'number' || fields.sellValue !== fields.sellValue || fields.sellValue < 0) {
+            return {
+                success: false,
+                details: `Invalid field value <${fields.sellValue}> for field sellValue`
+            }
+        }
     }
 
     return {
