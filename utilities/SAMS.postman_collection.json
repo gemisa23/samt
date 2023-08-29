@@ -176,6 +176,25 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Registrar transaccion",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:500/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "500",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
