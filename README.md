@@ -3,7 +3,7 @@
 
 # IMPORTANT
 The server will automatically connect to an online hosted instance of MongoDB at Railways.app
-The DB is already setup. With this in mind, the `setup_db` script is no longer mandatory to execute.
+**The DB is already setup. `db_setup` should not be executed if this online instance is used.**
 
 Run the following commands in order:
 
