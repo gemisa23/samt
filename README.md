@@ -69,10 +69,10 @@ The following API endpoints are available for managing products and transactions
     * `GET /products/best_selling/by_value?daysAgo=35`
     * Returns an array of the best selling products by total sell value in the past `daysAgo` days. Defaults to 30 days.
     * Returns null if no transactions registered.
-* **Register a transaction: ** `POST /transactions`
+* **Register a transaction:** `POST /transactions`
     * Request body
         * `date`: A string with format YYYY-MM-DD or timestamp.
-        * `products`: An array containing the details of the involved products. It should have at least one product details entry:
+        * `products`: An array containing the details of the involved products. It should have at least one product details entry
             *`productId`: The product ID. Should be an previously registered product.
             *`sellValue`: A non negative number indicating the sell value.
             *`unitsSold`: A nong negative number indicating the amount of units sold of this product for this particular transaction.
