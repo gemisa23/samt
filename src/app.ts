@@ -1,7 +1,7 @@
 import bodyParser from "body-parser";
 import cors from "cors";
 import express, { Express } from "express";
-import { MongoClient } from "mongodb";
+import { MongoClient, MongoClientOptions } from "mongodb";
 
 import TransactionService from "./services/Transaction.service";
 import ProductService from "./services/Product.service";
@@ -28,6 +28,7 @@ const build = async (): Promise<void> => {
         const productService = new ProductService(dbClient);
         loadProductController(app, productService);
         loadTransactionController(app, transactionService);
+        transactionService.setProductService(productService);
 
         app.listen(APP_PORT, APP_ADDR, () => { console.log(`Server is running on port ${APP_PORT}`); });
 

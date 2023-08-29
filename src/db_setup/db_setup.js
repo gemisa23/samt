@@ -1,5 +1,6 @@
 const { MongoClient } = require('mongodb');
-const client   = new MongoClient("mongodb://localhost:27017/SAM", { useUnifiedTopology: true}, { useNewUrlParser: true }, { connectTimeoutMS: 30000 }, { keepAlive: 1} );
+const { DEFAULT_MONGO_URL } = require('../config/app');
+const client   = new MongoClient(DEFAULT_MONGO_URL + '/SAM');
 
 const randFloat = (min, max) => Math.random() * (max - min) + min
 const randInt   = (min, max) => Math.floor(randFloat(min, max));
@@ -27,10 +28,12 @@ const getRandomIdPicker = (usedProductsIDs) => () => {
 (async() => {
 
     try {
+        await client.connect();
         await client.db('SAM').createCollection('Products');
         await client.db('SAM').createCollection('Transactions');
     } catch(err) {
-        // Nada.
+        console.log('error al conectar');
+        throw err;
     }
 
     const transactions = client.db('SAM').collection('Transactions');
@@ -49,10 +52,10 @@ const getRandomIdPicker = (usedProductsIDs) => () => {
     await products.insertMany(productsList);
 
     // - Generar transacciones
-    // - Cada transacción tiene entre uno y cinco productos.
+    // - Cada transacción tiene entre uno y cinco productos, ninguno se repite.
     const transactionsList = [];
     for (let i = 1; i <= 50; i++) {
-        // - Seleccionar los productos involucrados.
+        // - Seleccionar los productos involucrados en la transacción.
         // - Cantidad de productos a seleccionar:
         const amountOfProductsInvolved = Math.floor(Math.random() * (5 - 1) + 1);
         const usedIdsForThisTransaction = [];

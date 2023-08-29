@@ -1,8 +1,15 @@
-import { MongoClient, Db, Collection } from "mongodb";
-import { IBestSellingProductByValue, IBestSellingProductByUnits } from "../interfaces/Transaction.interfaces";
+import { MongoClient, Db, Collection, FindCursor } from "mongodb";
+import { IBestSellingProductByValue, IBestSellingProductByUnits, IComputedTransaction, IOperationResult } from "../interfaces/Transaction.interfaces";
 
 
-export default class TransactionModel {
+interface ITransactionModel {
+    bestSellingProductsByValue: (daysAgo: number) => Promise<IBestSellingProductByValue[]>
+    bestSellingProductsByUnits: (daysAgo: number) => Promise<IBestSellingProductByUnits[]>
+    registerTransaction: (transactionDetails: IComputedTransaction) => Promise<IOperationResult>
+    retrieveAll: () => Promise<FindCursor>
+}
+
+export default class TransactionModel implements ITransactionModel {
 
     private dbClient: MongoClient;
     private db: Db;
@@ -67,5 +74,22 @@ export default class TransactionModel {
         const bestSelling = await this.transactions.aggregate<IBestSellingProductByUnits>(pipeline).toArray();
         return bestSelling;
     }
+
+
+    async registerTransaction(transactionDetails: IComputedTransaction): Promise<IOperationResult> {
+        
+        await this.transactions.insertOne(transactionDetails);
+
+        return {
+            success: true,
+            details: transactionDetails
+        };
+
+    }
+
+    async retrieveAll(): Promise<FindCursor> {
+        return this.transactions.find({});
+    }
+
 
 }

@@ -8,7 +8,17 @@ const SORTINGS = Object.freeze({
     asc  : 1
 });
 
-export default class ProductService {
+interface IProductService {
+    registerNewProduct: (product: IProduct) => Promise<IOperationResult>
+    findProductByName: (name: string) => Promise<IProduct | null>
+    findProductById: (id: string) => Promise<IProduct | null>
+    listAllProducts: (listingOptions: IListingOptions) => Promise<Array<IProduct>>
+    updateProduct: (product: IProduct) => Promise<IOperationResult>
+    deleteProduct: (productID: string) => Promise<IOperationResult>
+    validateIds: (ids: string[]) => Promise<IOperationResult>
+    verifyIfAllIDsAreTaken: (ids: string[]) => Promise<IOperationResult>
+}
+export default class ProductService implements IProductService{
 
     private productModel: ProductModel;
 
@@ -17,7 +27,7 @@ export default class ProductService {
     }
 
     /**
-     * Los errores 
+     * 
      */
 
     async registerNewProduct(product: IProduct): Promise<IOperationResult> {
@@ -103,6 +113,56 @@ export default class ProductService {
         } catch(err) {
             throw err;
         }
+    }
+
+    async validateIds(ids: string[]): Promise<IOperationResult> {
+        try {
+            const findResult: FindCursor = await this.productModel.findManyByIds(ids);
+
+            const findResultsArray: IProduct[] = await findResult.toArray();
+
+            if (findResultsArray.length == 0) {
+                // All ids ok
+                return {
+                    success: true,
+                    details: 'All IDs are ok'
+                };
+            }
+            
+            return {
+                success: false,
+                details: 'The following IDs do not match any registered product: ' + findResultsArray.map(d => d.id).join(',')
+            };
+
+        } catch(err) {
+            throw err;
+        }
+    }
+
+    async verifyIfAllIDsAreTaken(ids: string[]): Promise<IOperationResult> {
+
+        try {
+            const findResults: IProduct[] = await this.listAllProducts({ field: "id", order: "desc" });
+
+            if (!ids.every(id => findResults.map(p => p.id).includes(id))) {
+                return {
+                    success: false,
+                    details: 'All ids should correspond to existing products.'
+                };
+            }
+    
+            return {
+                success: true,
+                details: 'All the received IDs correspond to existing products.'
+            };
+            
+        } catch(err) {
+
+            throw err;
+
+        }
+
+
     }
 
 }

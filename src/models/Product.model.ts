@@ -2,7 +2,16 @@ import { MongoClient, Db, FindCursor, Collection, UpdateResult, DeleteResult } f
 import { IOperationResult, IProduct } from "../interfaces/Product.interfaces";
 
 
-export default class ProductModel {
+interface IProductModel {
+    registerNewProduct: (product: IProduct) => Promise<IOperationResult>
+    updateProduct: (product: IProduct) => Promise<IOperationResult>
+    deleteProduct: (productId: string) => Promise<IOperationResult>
+    findOne: (query: object) => Promise<IProduct | null>
+    allProducts: () => Promise<FindCursor>
+    findManyByIds: (ids: string[]) => Promise<FindCursor>
+}
+
+export default class ProductModel implements IProductModel {
 
     private dbClient: MongoClient;
     private db: Db;
@@ -59,11 +68,18 @@ export default class ProductModel {
         return null;
     }
 
-    /* Devuelve un cursor */
+
     async allProducts(): Promise<FindCursor> {
         const projection = { _id: 0 };
         const cursor: FindCursor = this.products.find({}, { projection });
         return cursor;
     }
+
+    async findManyByIds(ids: string[]): Promise<FindCursor> {
+        return await this.products.find({
+            id: { "$nin": ids }
+        });
+    }
+
 
 }
