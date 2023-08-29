@@ -14,7 +14,7 @@ const build = async (): Promise<void> => {
     try {
         /* Setup DB */
         const app: Express = express();
-        const dbClient: MongoClient = new MongoClient(DEFAULT_MONGO_URL);
+        const dbClient: MongoClient = new MongoClient("mongodb://mongo:qTFAe6u4B86U9MXa5KSy@containers-us-west-198.railway.app:5563");
         await dbClient.connect();
 
         /* Setup middleware */
